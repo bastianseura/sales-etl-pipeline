@@ -2,11 +2,13 @@
 
 ## Overview
 
-This project documents the complete process of transforming raw sales exports into a validated, structured and analysis-ready dataset.
+This project documents the complete process of transforming raw sales exports into a validated and analysis-ready dataset.
 
-The original sales platform provided detailed product-level transaction reports, but these reports alone were not sufficient for reliable business analysis. Additional validation was required to identify active sales documents and exclude cancelled transactions.
+The original sales platform provided detailed product-level sales reports, but these reports alone were not sufficient for reliable business analysis. Additional validation was required to identify active sales documents and remove cancelled transactions.
 
-To address this challenge, an automated ETL (Extract, Transform, Load) pipeline was developed using Python. The pipeline automates report extraction, consolidates multiple files, validates transactions, cleans the data and produces a final dataset suitable for reporting, analytics and machine learning applications.
+To solve this problem, an automated ETL pipeline was developed using Python, Selenium and Pandas.
+
+The pipeline automates data extraction, consolidates multiple report files, validates transactions against active sales documents and produces a clean dataset ready for analytics.
 
 ---
 
@@ -16,48 +18,68 @@ The company required a reliable historical sales dataset to support:
 
 * Revenue analysis
 * Product performance analysis
-* Customer analysis
+* Customer analytics
 * Business reporting
-* Forecasting and predictive modeling
+* Forecasting and machine learning projects
 
 However, the available reports presented several limitations:
 
-* Detailed sales data was exported separately from document validation data.
-* Cancelled transactions could still appear in detailed sales reports.
-* Daily report extraction was repetitive and time-consuming.
-* Raw files required consolidation and standardization before analysis.
+* Detailed sales reports contained product-level transactions but did not clearly indicate whether documents remained active.
+* A second report was required to identify valid sales documents.
+* Cancelled transactions had to be removed before analysis.
+* Report extraction was repetitive and time-consuming.
+* Multiple files had to be consolidated manually.
 
-Without a validation process, business metrics such as revenue, product demand and customer behavior could be distorted.
+Without a validation process, key business metrics such as revenue, product demand and customer behavior could be distorted.
 
 ---
 
 ## Solution
 
-A multi-stage ETL pipeline was designed to automate the entire process.
+A two-stage ETL pipeline was designed and implemented.
 
-### Extract
+### Stage 1 — Sales Data Extraction
 
-* Automated login into the sales platform
-* Daily sales report extraction using Selenium
-* Automated Excel file downloads
-* Structured file organization by period
+Automated extraction of daily sales reports from the sales platform.
 
-### Transform
+Main tasks:
 
-* Consolidation of multiple report files
-* Validation against active sales documents
-* Removal of cancelled transactions
-* Data cleaning and standardization
-* Data type formatting
+* Login automation
+* Date filtering
+* Excel report export
+* Download management
+* File organization by period
 
-### Load
+Tools:
 
-* Export of a final validated dataset
-* Preparation for Power BI, SQL and Python analytics workflows
+* Python
+* Selenium
+* WebDriver Manager
 
 ---
 
-## Pipeline Architecture
+### Stage 2 — Sales Data Consolidation and Validation
+
+Consolidation of extracted reports and validation against active sales documents.
+
+Main tasks:
+
+* Batch loading of Excel reports
+* Dataset consolidation
+* Folio validation
+* Removal of cancelled transactions
+* Duplicate removal
+* Export of validated dataset
+
+Tools:
+
+* Python
+* Pandas
+* Excel
+
+---
+
+## ETL Pipeline
 
 ```text
 Sales Platform
@@ -66,19 +88,16 @@ Sales Platform
 Daily Report Extraction
       │
       ▼
-Raw Excel Files
+Raw Excel Reports
       │
       ▼
-File Consolidation
+Dataset Consolidation
       │
       ▼
 Document Validation
       │
       ▼
-Data Cleaning
-      │
-      ▼
-Final Sales Dataset
+Clean Sales Dataset
 ```
 
 ---
@@ -94,102 +113,10 @@ sales-etl-pipeline/
 │
 ├── notebooks/
 │   ├── 01_sales_data_extraction.ipynb
-│   ├── 02_sales_data_consolidation.ipynb
-│   ├── 03_document_validation.ipynb
-│   ├── 04_data_cleaning.ipynb
-│   └── 05_final_dataset_export.ipynb
+│   └── 02_sales_data_consolidation_validation.ipynb
 │
-├── data/
-│
-├── outputs/
-│
-└── src/
+└── images/
 ```
-
----
-
-## Project Stages
-
-### 01 — Sales Data Extraction
-
-Automated extraction of detailed daily sales reports from the sales platform.
-
-Main tasks:
-
-* Login automation
-* Date filtering
-* Excel export
-* Download management
-* File organization
-
-Tools:
-
-* Python
-* Selenium
-* WebDriver Manager
-
----
-
-### 02 — Sales Data Consolidation
-
-Combines all extracted Excel files into a single structured dataset.
-
-Main tasks:
-
-* Batch file loading
-* Schema standardization
-* Dataset consolidation
-
-Tools:
-
-* Python
-* Pandas
-
----
-
-### 03 — Document Validation
-
-Validates transactions using a secondary report containing active sales documents.
-
-Main tasks:
-
-* Import active document records
-* Match records using document folio
-* Remove cancelled transactions
-
-Tools:
-
-* Python
-* Pandas
-
----
-
-### 04 — Data Cleaning
-
-Prepares validated data for analytical use.
-
-Main tasks:
-
-* Column selection
-* Missing value handling
-* Data type conversion
-* Business rule validation
-
-Tools:
-
-* Python
-* Pandas
-
----
-
-### 05 — Final Dataset Export
-
-Exports the final dataset used for reporting and future analytical projects.
-
-Output:
-
-* Clean sales dataset
-* Analysis-ready structure
 
 ---
 
@@ -205,29 +132,53 @@ Output:
 
 ---
 
-## Security
+## Skills Demonstrated
+
+* ETL Design
+* Data Extraction
+* Web Scraping
+* Data Validation
+* Data Cleaning
+* Data Quality Control
+* Python Automation
+* Pandas
+* Selenium
+* Excel Processing
+* Business Data Preparation
+
+---
+
+## Output
+
+The final output of this project is a validated sales dataset containing:
+
+* Product-level sales transactions
+* Active sales documents only
+* Consolidated historical records
+* Standardized structure for analysis
+
+The resulting dataset can be used as a foundation for:
+
+* Power BI dashboards
+* KPI reporting
+* Customer analytics
+* Product analytics
+* Revenue analysis
+* Forecasting projects
+* Machine learning applications
+
+---
+
+## Security and Privacy
 
 Credentials, proprietary business information and production datasets are not included in this repository.
 
-Authentication is handled through environment variables and sensitive data has been excluded from version control.
+Authentication is handled through environment variables and sensitive business data has been excluded from version control.
 
 ---
 
 ## Repository Scope
 
-This repository focuses exclusively on the ETL process required to build a reliable sales dataset.
+This repository focuses exclusively on the ETL process required to create a reliable sales dataset.
 
-Business analytics, dashboard development and predictive modeling are intentionally maintained as separate projects that consume the final dataset generated by this pipeline.
-
----
-
-## Future Applications
-
-The resulting dataset can be used for:
-
-* Power BI dashboards
-* Customer analytics
-* Product analytics
-* Revenue reporting
-* Demand forecasting
-* Machine learning projects
+Business analytics, dashboard development and predictive modeling are maintained as separate projects that consume the dataset generated by this pipeline.
